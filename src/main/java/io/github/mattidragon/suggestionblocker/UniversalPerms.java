@@ -7,9 +7,7 @@ import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.Event;
-import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,27 +19,11 @@ public class UniversalPerms implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
-            dispatcher.register(
-                    CommandManager.literal("suggestion-blocker")
-                            .requires(Permissions.require("suggestionBlocker", 3))
-                            .then(CommandManager.literal("reload")
-                                    .requires(Permissions.require("suggestionBlocker.reload", 3))
-                                    .executes((context -> {
-                                        var success = Config.reload();
-                                        if (success)
-                                            context.getSource().sendFeedback(Text.literal("Suggestion Blocker reloaded successfully."), true);
-                                        else
-                                            context.getSource().sendError(Text.literal("Failed to reload, check logs."));
-                                        return success ? 1 : 0;
-                                    }))));
-        });
         CommandRegistrationCallback.EVENT.addPhaseOrdering(Event.DEFAULT_PHASE, new Identifier("suggestion-blocker", "after"));
         CommandRegistrationCallback.EVENT.register(new Identifier("suggestion-blocker", "after"), (dispatcher, registryAccess, environment) -> {
             alterNode(dispatcher.getRoot(), new ArrayDeque<>(), new HashMap<>());
             LOGGER.info("Applied cursed permissions!");
         });
-        Config.register();
     }
 
     private static void alterNode(CommandNode<ServerCommandSource> node, Deque<String> location, Map<CommandNode<ServerCommandSource>, String> visited) {
