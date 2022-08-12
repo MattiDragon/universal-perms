@@ -13,10 +13,10 @@
   "environment": "server",
   "entrypoints": {
     "main": [
-      "io.github.mattidragon.suggestionblocker.UniversalPerms"
+      "io.github.mattidragon.universalperms.UniversalPerms"
     ],
     "preLaunch": [
-      "io.github.mattidragon.suggestionblocker.UniversalPermsPreLaunch"
+      "io.github.mattidragon.universalperms.UniversalPermsPreLaunch"
     ]
   },
   "mixins": [
