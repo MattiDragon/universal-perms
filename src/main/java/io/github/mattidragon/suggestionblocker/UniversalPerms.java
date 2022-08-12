@@ -19,8 +19,8 @@ public class UniversalPerms implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        CommandRegistrationCallback.EVENT.addPhaseOrdering(Event.DEFAULT_PHASE, new Identifier("suggestion-blocker", "after"));
-        CommandRegistrationCallback.EVENT.register(new Identifier("suggestion-blocker", "after"), (dispatcher, registryAccess, environment) -> {
+        CommandRegistrationCallback.EVENT.addPhaseOrdering(Event.DEFAULT_PHASE, new Identifier("universal_perms", "after"));
+        CommandRegistrationCallback.EVENT.register(new Identifier("universal_perms", "after"), (dispatcher, registryAccess, environment) -> {
             alterNode(dispatcher.getRoot(), new ArrayDeque<>(), new HashMap<>());
             LOGGER.info("Applied cursed permissions!");
         });
