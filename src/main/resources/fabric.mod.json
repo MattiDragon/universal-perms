@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "universal_perms",
+  "version": "${version}",
+  "name": "Universal Perms",
+  "description": "Gives you full control over commands by adding permission nodes to everthing",
+  "authors": [
+    "MattiDragon"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/suggestion-blocker/icon.png",
+  "environment": "server",
+  "entrypoints": {
+    "main": [
+      "io.github.mattidragon.suggestionblocker.UniversalPerms"
+    ],
+    "preLaunch": [
+      "io.github.mattidragon.suggestionblocker.UniversalPermsPreLaunch"
+    ]
+  },
+  "mixins": [
+    "suggestion-blocker.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "fabric": "*",
+    "minecraft": "1.19.2",
+    "fabric-permissions-api-v0": "*"
+  }
+}
