@@ -9,7 +9,7 @@
   ],
   "contact": {},
   "license": "MIT",
-  "icon": "assets/suggestion-blocker/icon.png",
+  "icon": "universal_perms_icon.png",
   "environment": "server",
   "entrypoints": {
     "main": [
@@ -20,7 +20,7 @@
     ]
   },
   "mixins": [
-    "suggestion-blocker.mixins.json"
+    "universal_perms.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.14.9",
