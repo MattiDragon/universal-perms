@@ -9,7 +9,7 @@ import java.util.function.Predicate;
 
 @Mixin(CommandNode.class)
 public interface CommandNodeAccess {
-    @Accessor
+    @Accessor(remap = false)
     @Mutable
     void setRequirement(Predicate<?> requirement);
 }

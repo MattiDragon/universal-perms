@@ -37,7 +37,7 @@ public abstract class CommandManagerMixin {
             suggestionBlocker$stack.addLast(name);
     }
 
-    @ModifyExpressionValue(method = "makeTreeForSource", at = @At(value = "INVOKE", target = "Lcom/mojang/brigadier/tree/CommandNode;canUse(Ljava/lang/Object;)Z"))
+    @ModifyExpressionValue(method = "makeTreeForSource", at = @At(value = "INVOKE", target = "Lcom/mojang/brigadier/tree/CommandNode;canUse(Ljava/lang/Object;)Z", remap = false))
     private boolean suggestionBlocker$check(boolean isAllowed, CommandNode<ServerCommandSource> tree, CommandNode<CommandSource> result, ServerCommandSource source, Map<CommandNode<ServerCommandSource>, CommandNode<CommandSource>> resultNodes) {
         var location = Iterables.concat(suggestionBlocker$stack, List.of(suggestionBlocker$current));
         return Permissions.getPermissionValue(source, UniversalPerms.createPermission("view", location))
