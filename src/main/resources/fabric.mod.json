@@ -16,7 +16,7 @@
       "io.github.mattidragon.universalperms.UniversalPerms"
     ],
     "preLaunch": [
-      "io.github.mattidragon.universalperms.UniversalPermsPreLaunch"
+      "com.llamalad7.mixinextras.MixinExtrasBootstrap::init"
     ]
   },
   "mixins": [

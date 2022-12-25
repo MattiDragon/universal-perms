@@ -7,6 +7,7 @@ import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -42,7 +43,7 @@ public class UniversalPerms implements ModInitializer {
 
         var permission = createPermission("use", location);
         var requirement = node.getRequirement();
-        ((CommandNodeAccess)node).setRequirement((ServerCommandSource source) -> Permissions.getPermissionValue(source, permission).orElseGet(() -> requirement.test(source)));
+        ((CommandNodeAccess)node).setRequirement((ServerCommandSource source) -> (source.getEntity() == null ? TriState.DEFAULT : Permissions.getPermissionValue(source, permission)).orElseGet(() -> requirement.test(source)));
 
         node.getChildren().forEach(child -> alterNode(child, location, visited));
 

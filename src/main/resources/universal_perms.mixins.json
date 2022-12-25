@@ -5,7 +5,14 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "CommandManagerMixin",
-    "CommandNodeAccess"
+    "CommandNodeAccess",
+    "EntityArgumentTypeMixin",
+    "EntitySelectorMixin",
+    "MessageFormatMixin",
+    "PlayerManagerMixin",
+    "PlayerEntityMixin",
+    "ServerPlayerEntityMixin",
+    "ServerPlayNetworkHandlerMixin"
   ],
   "client": [
   ],
