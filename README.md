@@ -35,6 +35,6 @@ They should cover all permissions checks that aren't already covered.
 2. Commands that are aliases to other commands behave weirdly when their target is forbidden/hidden, but they are visible. Here is a list of vanilla aliases to watch out for:
     * `tell` and `w` redirect to `msg`
     * `tp` redirects to `teleport`
-    * `xp` redirects to `experiance`
+    * `xp` redirects to `experience`
     * `tm` redirects to `teammsg`
 3. Compatibility with other mods isn't guaranteed if the other mods add their commands later than usual or mess with their requirements after universal perms does.
