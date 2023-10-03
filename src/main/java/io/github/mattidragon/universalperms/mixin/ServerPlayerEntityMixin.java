@@ -20,6 +20,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     @Unique
     private boolean universal_perms$is_checking_permission;
 
+    // API call fails with publicKey --> Seems to have been removed from API
     // public ServerPlayerEntityMixin(World world, BlockPos pos, float yaw,
     // GameProfile gameProfile, @Nullable PlayerPublicKey publicKey) {
     public ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile) {
