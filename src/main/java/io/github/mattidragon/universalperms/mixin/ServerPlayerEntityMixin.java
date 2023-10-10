@@ -6,11 +6,9 @@ import io.github.mattidragon.universalperms.ModPermissions;
 import io.github.mattidragon.universalperms.UniversalPerms;
 import me.lucko.fabric.api.permissions.v0.Options;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.encryption.PlayerPublicKey;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,8 +18,8 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     @Unique
     private boolean universal_perms$is_checking_permission;
 
-    public ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile, @Nullable PlayerPublicKey publicKey) {
-        super(world, pos, yaw, gameProfile, publicKey);
+    public ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile) {
+        super(world, pos, yaw, gameProfile);
         throw new IllegalStateException();
     }
 
