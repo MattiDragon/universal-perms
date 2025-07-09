@@ -14,7 +14,8 @@ public abstract class PlayerEntityMixin {
     @Shadow public abstract PlayerAbilities getAbilities();
 
     @ModifyReturnValue(method = "isCreativeLevelTwoOp", at = @At("RETURN"))
-    private boolean universal_perms$modify_admin_tool_access(boolean old) {
-        return Permissions.getPermissionValue((PlayerEntity)(Object)this, ModPermissions.USE_ADMIN_TOOLS).map(value -> value && this.getAbilities().creativeMode).orElse(old);
+    private boolean modifyAdminToolAccess(boolean old) {
+        return Permissions.getPermissionValue((PlayerEntity)(Object)this, ModPermissions.USE_ADMIN_TOOLS)
+                .map(value -> value && this.getAbilities().creativeMode).orElse(old);
     }
 }

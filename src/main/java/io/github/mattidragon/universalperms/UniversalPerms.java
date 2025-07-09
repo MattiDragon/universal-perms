@@ -7,6 +7,7 @@ import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.util.Identifier;
@@ -26,6 +27,8 @@ public class UniversalPerms implements ModInitializer {
             alterNode(dispatcher.getRoot(), new ArrayDeque<>(), new HashMap<>());
             LOGGER.info("Applied cursed permissions!");
         });
+        // Use every misc permission once, so that luckperms knows about them for the editor
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> ModPermissions.usePermissions(server.getCommandSource()));
     }
 
     private static void alterNode(CommandNode<ServerCommandSource> node, Deque<String> location, Map<CommandNode<ServerCommandSource>, String> visited) {

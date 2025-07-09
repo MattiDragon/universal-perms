@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.9-SNAPSHOT'
+    id 'fabric-loom' version '1.11-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -7,8 +7,8 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-    maven { url 'https://jitpack.io'}
+    maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url = 'https://jitpack.io'}
 }
 
 dependencies {
@@ -17,12 +17,12 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:$loader_version"
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:$fabric_version"
-    modImplementation "me.lucko:fabric-permissions-api:0.3.1"
+    modImplementation "me.lucko:fabric-permissions-api:0.4.1"
 }
 
 processResources {
     inputs.property "version", project.version
-    filteringCharset "UTF-8"
+    filteringCharset = "UTF-8"
 
     filesMatching("fabric.mod.json") {
         expand "version": project.version

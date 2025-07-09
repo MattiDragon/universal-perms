@@ -10,8 +10,8 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(EntitySelector.class)
 public class EntitySelectorMixin {
-    @ModifyExpressionValue(method = "checkSourcePermission", at = @At(value = "INVOKE", target = "net/minecraft/server/command/ServerCommandSource.hasPermissionLevel(I)Z"))
-    private boolean universal_perms$checkSelector(boolean old, ServerCommandSource source) {
+    @ModifyExpressionValue(method = "checkSourcePermission", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/command/ServerCommandSource;hasElevatedPermissions()Z"))
+    private boolean applySelectorPermission(boolean old, ServerCommandSource source) {
         return Permissions.getPermissionValue(source, ModPermissions.USE_SELECTOR).orElse(old);
     }
 }

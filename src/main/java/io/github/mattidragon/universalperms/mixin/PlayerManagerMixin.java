@@ -13,12 +13,12 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 public abstract class PlayerManagerMixin {
     @ModifyArg(method = "sendCommandTree(Lnet/minecraft/server/network/ServerPlayerEntity;)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/server/PlayerManager;sendCommandTree(Lnet/minecraft/server/network/ServerPlayerEntity;I)V"))
-    private int universal_perms$override_permission_level(ServerPlayerEntity player, int old) {
+    private int overridePermissionLevelForClient(ServerPlayerEntity player, int old) {
         return Options.get(player, ModPermissions.PERMISSION_LEVEL).map(val -> {
             try {
                 return Integer.parseInt(val);
             } catch (NumberFormatException e) {
-                UniversalPerms.LOGGER.warn("Invalid permission level override for " + this);
+                UniversalPerms.LOGGER.warn("Invalid permission level override for {}", this);
                 return null;
             }
         }).orElse(old);

@@ -14,22 +14,22 @@ public class ServerPlayNetworkHandlerMixin {
     @Shadow public ServerPlayerEntity player;
 
     @ModifyExpressionValue(method = "onQueryEntityNbt", at = @At(value = "INVOKE", target = "net/minecraft/server/network/ServerPlayerEntity.hasPermissionLevel(I)Z"))
-    private boolean universal_perms$check_entity_nbt_query_perms(boolean old) {
+    private boolean checkEntityNbtQueryPerms(boolean old) {
         return Permissions.getPermissionValue(this.player, ModPermissions.QUERY_ENTITY_NBT).orElse(old);
     }
 
     @ModifyExpressionValue(method = "onQueryBlockNbt", at = @At(value = "INVOKE", target = "net/minecraft/server/network/ServerPlayerEntity.hasPermissionLevel(I)Z"))
-    private boolean universal_perms$check_block_nbt_query_perms(boolean old) {
+    private boolean checkBlockNbtQueryPerms(boolean old) {
         return Permissions.getPermissionValue(this.player, ModPermissions.QUERY_BLOCK_NBT).orElse(old);
     }
 
     @ModifyExpressionValue(method = "onUpdateDifficulty", at = @At(value = "INVOKE", target = "net/minecraft/server/network/ServerPlayerEntity.hasPermissionLevel(I)Z"))
-    private boolean universal_perms$check_difficulty_update_perms(boolean old) {
+    private boolean checkDifficultyUpdatePerms(boolean old) {
         return Permissions.getPermissionValue(this.player, ModPermissions.UPDATE_DIFFICULTY).orElse(old);
     }
 
     @ModifyExpressionValue(method = "onUpdateDifficultyLock", at = @At(value = "INVOKE", target = "net/minecraft/server/network/ServerPlayerEntity.hasPermissionLevel(I)Z"))
-    private boolean universal_perms$check_difficulty_lock_update_perms(boolean old) {
+    private boolean checkDifficultyLockUpdatePerms(boolean old) {
         return Permissions.getPermissionValue(this.player, ModPermissions.UPDATE_DIFFICULTY_LOCK).orElse(Permissions.getPermissionValue(this.player, ModPermissions.UPDATE_DIFFICULTY).orElse(old));
     }
 }

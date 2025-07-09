@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(EntitySelectorReader.class)
 public class EntitySelectorReaderMixin {
     @ModifyReturnValue(method = "shouldAllowAtSelectors", at = @At("RETURN"))
-    private static boolean universal_perms$checkSelector(boolean original, Object source) {
+    private static boolean applySelectorPermission(boolean original, Object source) {
         if (source instanceof CommandSource commandSource) {
             return Permissions.getPermissionValue(commandSource, ModPermissions.USE_SELECTOR).orElse(original);
         }

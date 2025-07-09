@@ -7,7 +7,6 @@ import io.github.mattidragon.universalperms.UniversalPerms;
 import me.lucko.fabric.api.permissions.v0.Options;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -16,18 +15,17 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     @Unique
-    private boolean universal_perms$is_checking_permission;
+    private boolean universal_perms$isCheckingPermission;
 
-    public ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile) {
-        super(world, pos, yaw, gameProfile);
-        throw new IllegalStateException();
+    public ServerPlayerEntityMixin(World world, GameProfile profile) {
+        super(world, profile);
     }
 
     @ModifyReturnValue(method = "getPermissionLevel", at = @At("RETURN"))
-    private int universal_perms$override_permission_level(int old) {
-        if (universal_perms$is_checking_permission)
+    private int overridePermissionLevel(int old) {
+        if (universal_perms$isCheckingPermission)
             return old;
-        universal_perms$is_checking_permission = true;
+        universal_perms$isCheckingPermission = true;
         var result = Options.get(this, ModPermissions.PERMISSION_LEVEL).map(val -> {
             try {
                 return Integer.parseInt(val);
@@ -36,7 +34,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
                 return null;
             }
         }).orElse(old);
-        universal_perms$is_checking_permission = true;
+        universal_perms$isCheckingPermission = true;
         return result;
     }
 }
