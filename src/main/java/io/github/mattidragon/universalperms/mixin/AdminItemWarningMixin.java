@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public class AdminItemWarningMixin {
     @ModifyExpressionValue(method = "shouldShowOperatorBlockWarnings", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getPermissionLevel()I"))
     private int modifyLevelForWarning(int original, ItemStack stack, PlayerEntity player) {
-        if (player.getWorld().isClient) return original;
+        if (player.getEntityWorld().isClient()) return original;
 
         return Permissions.getPermissionValue(player, ModPermissions.USE_ADMIN_TOOLS)
                 .map(hasPermission -> hasPermission ? 1000 : -1000)
