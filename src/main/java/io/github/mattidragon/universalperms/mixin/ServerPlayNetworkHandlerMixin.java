@@ -13,22 +13,46 @@ import org.spongepowered.asm.mixin.injection.At;
 public class ServerPlayNetworkHandlerMixin {
     @Shadow public ServerPlayerEntity player;
 
-    @ModifyExpressionValue(method = "onQueryEntityNbt", at = @At(value = "INVOKE", target = "net/minecraft/server/network/ServerPlayerEntity.hasPermissionLevel(I)Z"))
+    @ModifyExpressionValue(
+        method = "onQueryEntityNbt",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/command/permission/PermissionPredicate;hasPermission(Lnet/minecraft/command/permission/Permission;)Z"
+        )
+    )
     private boolean checkEntityNbtQueryPerms(boolean old) {
         return Permissions.getPermissionValue(this.player, ModPermissions.QUERY_ENTITY_NBT).orElse(old);
     }
 
-    @ModifyExpressionValue(method = "onQueryBlockNbt", at = @At(value = "INVOKE", target = "net/minecraft/server/network/ServerPlayerEntity.hasPermissionLevel(I)Z"))
+    @ModifyExpressionValue(
+        method = "onQueryBlockNbt",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/command/permission/PermissionPredicate;hasPermission(Lnet/minecraft/command/permission/Permission;)Z"
+        )
+    )
     private boolean checkBlockNbtQueryPerms(boolean old) {
         return Permissions.getPermissionValue(this.player, ModPermissions.QUERY_BLOCK_NBT).orElse(old);
     }
 
-    @ModifyExpressionValue(method = "onUpdateDifficulty", at = @At(value = "INVOKE", target = "net/minecraft/server/network/ServerPlayerEntity.hasPermissionLevel(I)Z"))
+    @ModifyExpressionValue(
+        method = "onUpdateDifficulty",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/command/permission/PermissionPredicate;hasPermission(Lnet/minecraft/command/permission/Permission;)Z"
+        )
+    )
     private boolean checkDifficultyUpdatePerms(boolean old) {
         return Permissions.getPermissionValue(this.player, ModPermissions.UPDATE_DIFFICULTY).orElse(old);
     }
 
-    @ModifyExpressionValue(method = "onUpdateDifficultyLock", at = @At(value = "INVOKE", target = "net/minecraft/server/network/ServerPlayerEntity.hasPermissionLevel(I)Z"))
+    @ModifyExpressionValue(
+        method = "onUpdateDifficultyLock",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/command/permission/PermissionPredicate;hasPermission(Lnet/minecraft/command/permission/Permission;)Z"
+        )
+    )
     private boolean checkDifficultyLockUpdatePerms(boolean old) {
         return Permissions.getPermissionValue(this.player, ModPermissions.UPDATE_DIFFICULTY_LOCK).orElse(Permissions.getPermissionValue(this.player, ModPermissions.UPDATE_DIFFICULTY).orElse(old));
     }

@@ -5,6 +5,9 @@ import com.mojang.authlib.GameProfile;
 import io.github.mattidragon.universalperms.ModPermissions;
 import io.github.mattidragon.universalperms.UniversalPerms;
 import me.lucko.fabric.api.permissions.v0.Options;
+import net.minecraft.command.permission.LeveledPermissionPredicate;
+import net.minecraft.command.permission.PermissionLevel;
+import net.minecraft.command.permission.PermissionPredicate;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
@@ -21,20 +24,23 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
         super(world, profile);
     }
 
-    @ModifyReturnValue(method = "getPermissionLevel", at = @At("RETURN"))
-    private int overridePermissionLevel(int old) {
-        if (universal_perms$isCheckingPermission)
-            return old;
+    @ModifyReturnValue(method = "getPermissions", at = @At("RETURN"))
+    private PermissionPredicate overridePermissionLevel(PermissionPredicate original) {
+        if (universal_perms$isCheckingPermission) return original;
         universal_perms$isCheckingPermission = true;
+
         var result = Options.get(this, ModPermissions.PERMISSION_LEVEL).map(val -> {
             try {
-                return Integer.parseInt(val);
+                var numericPermission = Integer.parseInt(val);
+                return (PermissionPredicate) LeveledPermissionPredicate.fromLevel(
+                    PermissionLevel.fromLevel(numericPermission)
+                );
             } catch (NumberFormatException e) {
                 UniversalPerms.LOGGER.warn("Invalid permission level override for " + this);
                 return null;
             }
-        }).orElse(old);
-        universal_perms$isCheckingPermission = true;
+        }).orElse(original);
+        universal_perms$isCheckingPermission = false;
         return result;
     }
 }
