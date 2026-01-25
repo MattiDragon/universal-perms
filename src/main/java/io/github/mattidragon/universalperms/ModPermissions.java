@@ -2,7 +2,7 @@ package io.github.mattidragon.universalperms;
 
 import me.lucko.fabric.api.permissions.v0.Options;
 import me.lucko.fabric.api.permissions.v0.Permissions;
-import net.minecraft.command.CommandSource;
+import net.minecraft.commands.SharedSuggestionProvider;
 
 public class ModPermissions {
     public static final String USE_SELECTOR = "universal_perms.misc.selector";
@@ -13,7 +13,7 @@ public class ModPermissions {
     public static final String USE_ADMIN_TOOLS = "universal_perms.misc.use_admin_blocks";
     public static final String PERMISSION_LEVEL = "universal_perms.misc.forced_permission_level";
 
-    public static void usePermissions(CommandSource commandSource) {
+    public static void usePermissions(SharedSuggestionProvider commandSource) {
         Permissions.getPermissionValue(commandSource, USE_SELECTOR);
         Permissions.getPermissionValue(commandSource, QUERY_BLOCK_NBT);
         Permissions.getPermissionValue(commandSource, QUERY_ENTITY_NBT);

@@ -5,19 +5,19 @@ import com.mojang.authlib.GameProfile;
 import io.github.mattidragon.universalperms.ModPermissions;
 import io.github.mattidragon.universalperms.UniversalPerms;
 import me.lucko.fabric.api.permissions.v0.Options;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.world.World;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(ServerPlayerEntity.class)
-public abstract class ServerPlayerEntityMixin extends PlayerEntity {
+@Mixin(ServerPlayer.class)
+public abstract class ServerPlayerEntityMixin extends Player {
     @Unique
     private boolean universal_perms$isCheckingPermission;
 
-    public ServerPlayerEntityMixin(World world, GameProfile profile) {
+    public ServerPlayerEntityMixin(Level world, GameProfile profile) {
         super(world, profile);
     }
 

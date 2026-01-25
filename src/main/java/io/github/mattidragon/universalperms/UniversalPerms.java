@@ -9,8 +9,8 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.util.TriState;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.util.Identifier;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,17 +21,17 @@ public class UniversalPerms implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        var phaseId = Identifier.of("universal_perms", "after");
+        var phaseId = ResourceLocation.fromNamespaceAndPath("universal_perms", "after");
         CommandRegistrationCallback.EVENT.addPhaseOrdering(Event.DEFAULT_PHASE, phaseId);
         CommandRegistrationCallback.EVENT.register(phaseId, (dispatcher, registryAccess, environment) -> {
             alterNode(dispatcher.getRoot(), new ArrayDeque<>(), new HashMap<>());
             LOGGER.info("Applied cursed permissions!");
         });
         // Use every misc permission once, so that luckperms knows about them for the editor
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> ModPermissions.usePermissions(server.getCommandSource()));
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> ModPermissions.usePermissions(server.createCommandSourceStack()));
     }
 
-    private static void alterNode(CommandNode<ServerCommandSource> node, Deque<String> location, Map<CommandNode<ServerCommandSource>, String> visited) {
+    private static void alterNode(CommandNode<CommandSourceStack> node, Deque<String> location, Map<CommandNode<CommandSourceStack>, String> visited) {
         var name = node.getName();
         if (!name.isEmpty())
             location.addLast(name);
@@ -47,7 +47,7 @@ public class UniversalPerms implements ModInitializer {
 
         var permission = createPermission("use", location);
         var requirement = node.getRequirement();
-        ((CommandNodeAccess)node).setRequirement((ServerCommandSource source) -> (source.getEntity() == null ? TriState.DEFAULT : Permissions.getPermissionValue(source, permission)).orElseGet(() -> requirement.test(source)));
+        ((CommandNodeAccess)node).setRequirement((CommandSourceStack source) -> (source.getEntity() == null ? TriState.DEFAULT : Permissions.getPermissionValue(source, permission)).orElseGet(() -> requirement.test(source)));
 
         node.getChildren().forEach(child -> alterNode(child, location, visited));
 
