@@ -10,26 +10,31 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ServerGamePacketListenerImpl.class)
-public class ServerPlayNetworkHandlerMixin {
+public class ServerGamePacketListenerImplMixin {
     @Shadow public ServerPlayer player;
 
-    @ModifyExpressionValue(method = "handleEntityTagQuery", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;hasPermissions(I)Z"))
+    @ModifyExpressionValue(method = "handleEntityTagQuery", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/permissions/PermissionSet;hasPermission(Lnet/minecraft/server/permissions/Permission;)Z"))
     private boolean checkEntityNbtQueryPerms(boolean old) {
         return Permissions.getPermissionValue(this.player, ModPermissions.QUERY_ENTITY_NBT).orElse(old);
     }
 
-    @ModifyExpressionValue(method = "handleBlockEntityTagQuery", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;hasPermissions(I)Z"))
+    @ModifyExpressionValue(method = "handleBlockEntityTagQuery", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/permissions/PermissionSet;hasPermission(Lnet/minecraft/server/permissions/Permission;)Z"))
     private boolean checkBlockNbtQueryPerms(boolean old) {
         return Permissions.getPermissionValue(this.player, ModPermissions.QUERY_BLOCK_NBT).orElse(old);
     }
 
-    @ModifyExpressionValue(method = "handleChangeDifficulty", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;hasPermissions(I)Z"))
+    @ModifyExpressionValue(method = "handleChangeDifficulty", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/permissions/PermissionSet;hasPermission(Lnet/minecraft/server/permissions/Permission;)Z"))
     private boolean checkDifficultyUpdatePerms(boolean old) {
         return Permissions.getPermissionValue(this.player, ModPermissions.UPDATE_DIFFICULTY).orElse(old);
     }
 
-    @ModifyExpressionValue(method = "handleLockDifficulty", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;hasPermissions(I)Z"))
+    @ModifyExpressionValue(method = "handleLockDifficulty", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/permissions/PermissionSet;hasPermission(Lnet/minecraft/server/permissions/Permission;)Z"))
     private boolean checkDifficultyLockUpdatePerms(boolean old) {
         return Permissions.getPermissionValue(this.player, ModPermissions.UPDATE_DIFFICULTY_LOCK).orElse(Permissions.getPermissionValue(this.player, ModPermissions.UPDATE_DIFFICULTY).orElse(old));
+    }
+
+    @ModifyExpressionValue(method = "handleChangeGameMode", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/permissions/PermissionCheck;check(Lnet/minecraft/server/permissions/PermissionSet;)Z"))
+    private boolean checkGameModeUpdatePerms(boolean old) {
+        return Permissions.getPermissionValue(this.player, ModPermissions.UPDATE_GAME_MODE).orElse(old);
     }
 }

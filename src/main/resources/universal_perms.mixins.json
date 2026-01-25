@@ -5,14 +5,12 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "AdminItemWarningMixin",
-    "CommandManagerMixin",
+    "CommandsMixin",
     "CommandNodeAccess",
-    "EntitySelectorMixin",
-    "EntitySelectorReaderMixin",
-    "PlayerEntityMixin",
+    "PlayerMixin",
     "PlayerManagerMixin",
-    "ServerPlayerEntityMixin",
-    "ServerPlayNetworkHandlerMixin"
+    "ServerPlayerMixin",
+    "ServerGamePacketListenerImplMixin"
   ],
   "client": [
   ],

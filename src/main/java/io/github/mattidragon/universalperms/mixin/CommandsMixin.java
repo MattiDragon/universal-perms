@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @Mixin(Commands.class)
-public abstract class CommandManagerMixin {
+public abstract class CommandsMixin {
     @Unique
     private static final ThreadLocal<Deque<String>> universal_perms$stack = ThreadLocal.withInitial(ArrayDeque::new);
 

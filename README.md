@@ -25,6 +25,8 @@ This mod also adds some permission nodes for things that aren't commands, but st
 * `universal_perms.misc.update_difficulty_lock` allows changing the difficulty lock status, defaults to `universal_perms.misc.update_difficulty`
 * `universal_perms.misc.use_admin_blocks` allows minecrafts `isCreativeLevelTwoOp` check to pass if the player is in creative mode. 
   This is mostly used for admin tools like command blocks and debug sticks
+* (1.21.11+) `universal_perms.misc.gamemode_switcher` causes the server to accept gamemode switching by players. 
+  The client must additionally be made aware of this power through a mod or raised permission level.
 
 There's also a `universal_perms.misc.forced_permission_level` meta permission that can be set to give a player a vanilla permission level. 
 Permission levels are used as defaults for all checks this mod adds. They are also sent to the client and are checked there for certain features like the gamemode switcher

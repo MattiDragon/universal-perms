@@ -10,7 +10,7 @@ import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +21,7 @@ public class UniversalPerms implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        var phaseId = ResourceLocation.fromNamespaceAndPath("universal_perms", "after");
+        var phaseId = Identifier.fromNamespaceAndPath("universal_perms", "after");
         CommandRegistrationCallback.EVENT.addPhaseOrdering(Event.DEFAULT_PHASE, phaseId);
         CommandRegistrationCallback.EVENT.register(phaseId, (dispatcher, registryAccess, environment) -> {
             alterNode(dispatcher.getRoot(), new ArrayDeque<>(), new HashMap<>());

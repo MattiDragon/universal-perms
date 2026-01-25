@@ -3,7 +3,7 @@
   "id": "universal_perms",
   "version": "${version}",
   "name": "Universal Perms",
-  "description": "Gives you full control over commands by adding permission nodes to everything",
+  "description": "Gives you full control over commands by adding permission nodes for everything",
   "authors": [
     "MattiDragon"
   ],
@@ -20,9 +20,9 @@
     "universal_perms.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.16.14",
+    "fabricloader": ">=0.18.4",
     "fabric": "*",
-    "minecraft": ">=1.21.7",
+    "minecraft": "1.21.11",
     "fabric-permissions-api-v0": "*"
   }
 }
