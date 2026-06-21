@@ -1,9 +1,7 @@
 package io.github.mattidragon.universalperms;
 
-import com.google.common.collect.Iterables;
 import com.mojang.brigadier.tree.CommandNode;
 import io.github.mattidragon.universalperms.mixin.CommandNodeAccess;
-import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.Event;
@@ -15,7 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
+@SuppressWarnings("UnstableApiUsage")
 public class UniversalPerms implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(UniversalPerms.class);
 
@@ -23,7 +24,7 @@ public class UniversalPerms implements ModInitializer {
     public void onInitialize() {
         var phaseId = Identifier.fromNamespaceAndPath("universal_perms", "after");
         CommandRegistrationCallback.EVENT.addPhaseOrdering(Event.DEFAULT_PHASE, phaseId);
-        CommandRegistrationCallback.EVENT.register(phaseId, (dispatcher, registryAccess, environment) -> {
+        CommandRegistrationCallback.EVENT.register(phaseId, (dispatcher, _, _) -> {
             alterNode(dispatcher.getRoot(), new ArrayDeque<>(), new HashMap<>());
             LOGGER.info("Applied cursed permissions!");
         });
@@ -47,7 +48,7 @@ public class UniversalPerms implements ModInitializer {
 
         var permission = createPermission("use", location);
         var requirement = node.getRequirement();
-        ((CommandNodeAccess)node).setRequirement((CommandSourceStack source) -> (source.getEntity() == null ? TriState.DEFAULT : Permissions.getPermissionValue(source, permission)).orElseGet(() -> requirement.test(source)));
+        ((CommandNodeAccess)node).setRequirement((CommandSourceStack source) -> (source.getEntity() == null ? TriState.DEFAULT : source.checkPermission(permission)).orElseGet(() -> requirement.test(source)));
 
         node.getChildren().forEach(child -> alterNode(child, location, visited));
 
@@ -55,7 +56,13 @@ public class UniversalPerms implements ModInitializer {
             location.removeLast();
     }
 
-    public static String createPermission(String type, Iterable<String> command) {
-        return String.join(".", Iterables.concat(List.of("universal_perms", type), command));
+    public static Identifier createPermission(String type, Iterable<String> command) {
+        return Identifier.fromNamespaceAndPath("universal_perms", type + "/" + StreamSupport.stream(command.spliterator(), false)
+                .map(UniversalPerms::cleanForId)
+                .collect(Collectors.joining(".")));
+    }
+
+    private static String cleanForId(String s) {
+        return s.toLowerCase(Locale.ROOT).replaceAll("[^a-z0-9_-]", "_");
     }
 }

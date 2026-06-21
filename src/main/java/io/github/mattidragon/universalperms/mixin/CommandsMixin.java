@@ -5,9 +5,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.brigadier.tree.CommandNode;
 import io.github.mattidragon.universalperms.UniversalPerms;
-import me.lucko.fabric.api.permissions.v0.Permissions;
+import net.fabricmc.fabric.api.permission.v1.PermissionContextOwner;
 import net.minecraft.commands.Commands;
-import net.minecraft.commands.SharedSuggestionProvider;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,6 +18,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("UnstableApiUsage")
 @Mixin(Commands.class)
 public abstract class CommandsMixin {
     @Unique
@@ -34,12 +34,11 @@ public abstract class CommandsMixin {
     @WrapOperation(method = "fillUsableCommands", at = @At(value = "INVOKE", target = "Lcom/mojang/brigadier/tree/CommandNode;canUse(Ljava/lang/Object;)Z", remap = false))
     private static <S> boolean check(CommandNode<S> instance, S source, Operation<Boolean> original) {
         var originalValue = original.call(instance, source);
-        if (!(source instanceof SharedSuggestionProvider commandSource)) {
+        if (!(source instanceof PermissionContextOwner commandSource)) {
             return originalValue;
         }
         var nodePath = Iterables.concat(universal_perms$stack.get(), List.of(instance.getName()));
-        return Permissions.getPermissionValue(commandSource, UniversalPerms.createPermission("view", nodePath))
-                .orElse(originalValue);
+        return commandSource.checkPermission(UniversalPerms.createPermission("view", nodePath), originalValue);
     }
 
     @Inject(method = "fillUsableCommands", at = @At("RETURN"))
