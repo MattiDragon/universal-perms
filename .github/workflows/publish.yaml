@@ -8,11 +8,6 @@ on:
         required: true
         type: choice
         options: ["stable", "beta", "alpha"]
-      sync-description:
-        description: Should the README be synced?
-        required: false
-        default: false
-        type: boolean
 
 jobs:
   publish:

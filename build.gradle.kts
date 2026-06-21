@@ -71,7 +71,7 @@ publishMods {
     }
 
     github {
-        repository = "MattiDragon/CustomDefaultWorldPreset"
+        repository = "MattiDragon/universal-perms"
         accessToken.set(providers.environmentVariable("GITHUB_TOKEN"))
 
         commitish.set(providers.environmentVariable("GITHUB_BRANCH"))
